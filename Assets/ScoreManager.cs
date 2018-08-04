@@ -10,11 +10,11 @@ public class ScoreManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        scoreText.text = "0 $";
+        scoreText.text = "$ 0";
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        scoreText.text = player.moneyAmount() + " $";
+        scoreText.text = "$ " + player.moneyAmount();
 	}
 }
