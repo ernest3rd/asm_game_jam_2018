@@ -26,6 +26,12 @@ public class SunbathersController : MonoBehaviour {
 
     public GameObject sunbather;
     public GameObject drinkbubble;
+    public GameObject happybubble;
+    public GameObject sadbubble;
+
+    public GameObject currentBubble;
+    private float faceTimer = 3f;
+    private bool bubbleTimerActive = false;
 
     private float holdPoseTime = 0f;
     private Animator animator;
@@ -117,6 +123,20 @@ public class SunbathersController : MonoBehaviour {
                     tipCounter = 0;
                 }
             }
+
+            // Bubble controlling
+            if (currentBubble)
+            {
+                if (bubbleTimerActive) {
+                    faceTimer -= Time.deltaTime;
+                    if (faceTimer < 0)
+                    {
+                        currentBubble.SetActive(false);
+                        currentBubble = null;
+                        bubbleTimerActive = false;
+                    }
+                }
+            }
         }
         else {
             if (deadness < 1f)
@@ -137,6 +157,19 @@ public class SunbathersController : MonoBehaviour {
         drinkbubble.SetActive(true);
     }
 
+    public void initiateSad() {
+        showBubble(sadbubble, true);
+    }
+
+    private void showBubble(GameObject bubble, bool timer) {
+        if (!(currentBubble)) {
+            currentBubble = bubble;
+            currentBubble.SetActive(true);
+            faceTimer = 3f;
+            bubbleTimerActive = timer;
+        }
+    }
+
     public bool isThirsty(){
         return thirsty && alive;
     }
@@ -149,6 +182,7 @@ public class SunbathersController : MonoBehaviour {
             }
             thirsty = false;
             drinkbubble.SetActive(false);
+            showBubble(happybubble, true);
             return (int)tipCounter;
         }
         return 0;
