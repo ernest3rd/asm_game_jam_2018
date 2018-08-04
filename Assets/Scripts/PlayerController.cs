@@ -75,9 +75,22 @@ public class PlayerController : MonoBehaviour {
             {
                 if (triggeringArea == "BarTrigger")
                 {
-                    carryingDrink = true;
-                    icons[0].SetActive(false);
-                    drink.gameObject.SetActive(carryingDrink);
+                    if (!(buttonDownActive))
+                    {
+                        if (carryingDrink)
+                        {
+                            carryingDrink = false;
+                            icons[0].SetActive(true);
+                            drink.gameObject.SetActive(carryingDrink);
+                        }
+                        else
+                        {
+                            carryingDrink = true;
+                            icons[0].SetActive(false);
+                            drink.gameObject.SetActive(carryingDrink);
+                        }
+                        buttonDownActive = true;
+                    }
                 }
                 else if (triggeringArea == "SunbatherTrigger")
                 {
