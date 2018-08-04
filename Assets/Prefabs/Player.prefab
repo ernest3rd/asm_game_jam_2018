@@ -253,6 +253,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4154446850069944}
   - component: {fileID: 212736810423658990}
+  - component: {fileID: 114722683511527542}
   m_Layer: 0
   m_Name: GetDrinkIcon
   m_TagString: Untagged
@@ -350,6 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4368114774672092}
   - component: {fileID: 212271005282278718}
+  - component: {fileID: 114916373570758304}
   m_Layer: 0
   m_Name: GiveDrinkIcon
   m_TagString: Untagged
@@ -514,6 +516,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4496966228423528}
   - component: {fileID: 212876124024063890}
+  - component: {fileID: 114709536638724796}
   m_Layer: 0
   m_Name: ApplyLotionIcon
   m_TagString: Untagged
@@ -1882,6 +1885,22 @@ MonoBehaviour:
     m_RestoreDefaultPose: 1
     targetPosition: {x: -1.689885, y: 2.134306, z: 0.34469432}
     flip: 0
+--- !u!114 &114709536638724796
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1740705420059792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b3f0c771f7c4b429784ecd04d37789, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.1
+  speed: 4
+  enableX: 0
+  enableY: 1
+  direction: 1
 --- !u!114 &114717395707642588
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1901,6 +1920,22 @@ MonoBehaviour:
   - {fileID: 1444652664804416}
   - {fileID: 1579038284982966}
   - {fileID: 1740705420059792}
+--- !u!114 &114722683511527542
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1444652664804416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b3f0c771f7c4b429784ecd04d37789, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.1
+  speed: 4
+  enableX: 0
+  enableY: 1
+  direction: 1
 --- !u!114 &114762971340014298
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2020,6 +2055,22 @@ MonoBehaviour:
   m_Bones: []
   m_BoneTransforms:
   - {fileID: 4530028615746854}
+--- !u!114 &114916373570758304
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1579038284982966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b3f0c771f7c4b429784ecd04d37789, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.1
+  speed: 4
+  enableX: 0
+  enableY: 1
+  direction: 1
 --- !u!137 &137130966925645464
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
