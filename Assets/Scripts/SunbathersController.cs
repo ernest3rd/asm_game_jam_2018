@@ -28,6 +28,7 @@ public class SunbathersController : MonoBehaviour {
     public GameObject drinkbubble;
     public GameObject happybubble;
     public GameObject sadbubble;
+    public GameObject firebubble;
 
     public GameObject currentBubble;
     private float faceTimer = 3f;
@@ -81,6 +82,7 @@ public class SunbathersController : MonoBehaviour {
                 {
                     sunburn = 0;
                 }
+                amountOfSunLotion -= Time.deltaTime;
             }
 
             // Dehydrate
@@ -125,6 +127,14 @@ public class SunbathersController : MonoBehaviour {
             }
 
             // Bubble controlling
+            if (amountOfSunLotion < -7f)
+            {
+                if (currentBubble != firebubble)
+                {
+                    showBubble(firebubble, false);
+                }
+            }
+
             if (currentBubble)
             {
                 if (bubbleTimerActive) {
@@ -170,6 +180,12 @@ public class SunbathersController : MonoBehaviour {
         }
     }
 
+    private void hideBubble() {
+        currentBubble.SetActive(false);
+        currentBubble = null;
+        bubbleTimerActive = false;
+    }
+
     public bool isThirsty(){
         return thirsty && alive;
     }
@@ -192,6 +208,13 @@ public class SunbathersController : MonoBehaviour {
         if (amountOfSunLotion < maxSunLotion && alive)
         {
             amountOfSunLotion += amount;
+            if (currentBubble == firebubble) {
+                if (amountOfSunLotion > 20f)
+                {
+                    hideBubble();
+                    showBubble(happybubble, true);
+                }
+            }
             return true;
         }
         return false;
