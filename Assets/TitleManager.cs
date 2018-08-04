@@ -25,8 +25,7 @@ public class TitleManager : MonoBehaviour {
             start.SetActive(true);
             if (Input.GetButtonUp("Fire1"))
             {
-                Debug.Log("röh");
-                SceneManager.LoadScene("SunbathersDrink");
+                SceneManager.LoadScene("GameScene");
                 //enabled = false;
             }
         }
