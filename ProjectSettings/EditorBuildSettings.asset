@@ -11,7 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Title.unity
     guid: 761b32e5c4e984b2c865fc85487bd673
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SunbathersDrink.unity
     guid: 64ebcefd9c3d540a397301a8f5b4176a
+  - enabled: 1
+    path: Assets/Scenes/GameScene.unity
+    guid: fd21903e3888161458e9a1e1ab473253
   m_configObjects: {}
