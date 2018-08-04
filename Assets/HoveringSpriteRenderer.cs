@@ -9,11 +9,16 @@ public class HoveringSpriteRenderer : MonoBehaviour {
     public bool enableY = true;
     public bool direction = true;
 
-    private Vector3 originalPosition;
+    private Vector3 originalOffset;
+
+	private void Awake()
+	{
+        originalOffset = transform.parent.position - transform.position;
+	}
 
 	// Use this for initialization
 	void Start () {
-        originalPosition = transform.localPosition;
+        originalOffset = transform.parent.position - transform.position;
 	}
 	
 	// Update is called once per frame
@@ -26,6 +31,6 @@ public class HoveringSpriteRenderer : MonoBehaviour {
             offset.y = Mathf.Cos(Time.deltaTime / speed) * radius;
         }
 
-        transform.localPosition = originalPosition + offset;
+        transform.position =  transform.parent.position + originalOffset + offset;
 	}
 }
