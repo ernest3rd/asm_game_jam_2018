@@ -96,22 +96,31 @@ public class PlayerController : MonoBehaviour {
                 {
                     if (carryingDrink)
                     {
-                        if (parent.GetComponent<SunbathersController>().isThirsty())
+                        if (!(buttonDownActive))
                         {
-                            money += parent.GetComponent<SunbathersController>().addHydration();
-                            carryingDrink = false;
-                            buttonDownActive = true;
-                            icons[1].SetActive(false);
-                            drink.gameObject.SetActive(carryingDrink);
+                            if (parent.GetComponent<SunbathersController>().isThirsty())
+                            {
+                                money += parent.GetComponent<SunbathersController>().addHydration();
+                                carryingDrink = false;
+                                buttonDownActive = true;
+                                icons[1].SetActive(false);
+                                drink.gameObject.SetActive(carryingDrink);
+                            }
+                            else
+                            {
+                                parent.GetComponent<SunbathersController>().initiateSad();
+                            }
                         }
                     }
                     else
                     {
-                        if (!(buttonDownActive)) {
+                        if (!(buttonDownActive))
+                        {
                             parent.GetComponent<SunbathersController>().addLotion(10.0f * Time.deltaTime);
                             if (!applyingLotion)
                             {
                                 animator.SetBool("applyingLotion", true);
+                                icons[1].SetActive(false);
                                 icons[2].SetActive(false);
                                 applyingLotion = true;
                             }

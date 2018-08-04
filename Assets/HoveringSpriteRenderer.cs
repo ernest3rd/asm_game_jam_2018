@@ -26,6 +26,6 @@ public class HoveringSpriteRenderer : MonoBehaviour {
             offset.y = Mathf.Cos(Time.deltaTime / speed) * radius;
         }
 
-        transform.position = originalPosition + offset;
+        transform.localPosition = originalPosition + offset;
 	}
 }
