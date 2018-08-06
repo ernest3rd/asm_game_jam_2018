@@ -45,7 +45,7 @@ public class LevelManager : MonoBehaviour {
         else {
             foreach (GameObject sb in sunbathers)
             {
-                if (!sb.GetComponent<SunbathersController>().isAlive())
+                if (!sb.GetComponent<SunbathersController>().IsAlive())
                 {
                     // Game over
                     UIGameOver.SetActive(true);
