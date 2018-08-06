@@ -71,6 +71,7 @@ GameObject:
   - component: {fileID: 4055794835540594}
   - component: {fileID: 212521291877720088}
   - component: {fileID: 114378883225067820}
+  - component: {fileID: 114863533334648214}
   m_Layer: 0
   m_Name: DrinkBubble
   m_TagString: Untagged
@@ -203,6 +204,7 @@ GameObject:
   - component: {fileID: 4521347518913678}
   - component: {fileID: 212326992493456344}
   - component: {fileID: 114885168778797456}
+  - component: {fileID: 114137195157225342}
   m_Layer: 0
   m_Name: FireBubble
   m_TagString: Untagged
@@ -252,7 +254,7 @@ GameObject:
   - component: {fileID: 4849481620863006}
   - component: {fileID: 61285081751482258}
   m_Layer: 0
-  m_Name: SunbatherTrigger
+  m_Name: SunbatherTriggerLeft
   m_TagString: SunbatherTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -396,7 +398,7 @@ GameObject:
   - component: {fileID: 4385317115286866}
   - component: {fileID: 61547654443413768}
   m_Layer: 0
-  m_Name: SunbatherTrigger (1)
+  m_Name: SunbatherTriggerRight
   m_TagString: SunbatherTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -548,7 +550,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1897160016564866}
   m_LocalRotation: {x: -0, y: -0, z: -0.39136422, w: 0.92023593}
-  m_LocalPosition: {x: 0.8899998, y: -0.40999985, z: 0}
+  m_LocalPosition: {x: 0.788, y: -0.329, z: 0}
   m_LocalScale: {x: 0.2, y: 0.8, z: 1}
   m_Children: []
   m_Father: {fileID: 4451357235565004}
@@ -846,8 +848,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1604129750417428}
   m_LocalRotation: {x: -0, y: -0, z: -0.4049864, w: 0.91432273}
-  m_LocalPosition: {x: -0.59, y: -0.41, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.8, z: 1}
+  m_LocalPosition: {x: -0.525, y: -0.351, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.8, z: 1}
   m_Children: []
   m_Father: {fileID: 4451357235565004}
   m_RootOrder: 5
@@ -929,11 +931,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.8889121, y: 0.5274542}
-      - {x: -0.07110104, y: 0.2676469}
-      - {x: -0.19776314, y: -0.7687831}
-      - {x: 0.6966373, y: -0.4916694}
-      - {x: 0.7511344, y: -0.011479504}
+    - - {x: -0.09665828, y: 0.1207024}
+      - {x: -0.17663866, y: -0.68545055}
+      - {x: -0.017092645, y: -0.71807027}
+      - {x: 0.42107147, y: -0.58188474}
+      - {x: 0.70597684, y: -0.35617727}
+      - {x: 0.8565354, y: 0.39556918}
+      - {x: 0.7074733, y: 0.46267903}
+      - {x: 0.07107121, y: 0.2513966}
 --- !u!60 &60602784055711544
 PolygonCollider2D:
   m_ObjectHideFlags: 1
@@ -986,7 +991,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.1
 --- !u!61 &61547654443413768
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -1058,6 +1063,18 @@ MonoBehaviour:
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4926933867282798}
   m_AttachedIK: {fileID: 0}
+--- !u!114 &114137195157225342
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1512541906803494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43ecbc7aad87449ba92039a3471d7a1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 0.8349056, b: 0.8349056, a: 1}
 --- !u!114 &114186101360084412
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1281,7 +1298,6 @@ MonoBehaviour:
   happybubble: {fileID: 1476523216677588}
   sadbubble: {fileID: 1974405487676134}
   firebubble: {fileID: 1512541906803494}
-  currentBubble: {fileID: 0}
 --- !u!114 &114569742831763672
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1399,6 +1415,18 @@ MonoBehaviour:
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4848169973478124}
   m_AttachedIK: {fileID: 0}
+--- !u!114 &114863533334648214
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1135179994715158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43ecbc7aad87449ba92039a3471d7a1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 0.8352941, b: 0.8352941, a: 1}
 --- !u!114 &114885168778797456
 MonoBehaviour:
   m_ObjectHideFlags: 1

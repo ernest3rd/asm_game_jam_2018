@@ -5,15 +5,17 @@ using UnityEngine.UI;
 
 public class SunbathersController : MonoBehaviour {
     private const float maxSunBurn = 100f;
-    private const float maxSunLotion = 100f;
+    private const float maxSunLotion = 30f;
     private const float maxHydration = 100f;
-    private const float sunLotionRelief = -0.1f;
-    private const float sunburnRateIncrease = 0.05f;
+    private const float sunLotionRelief = -0.2f;
+    private const float sunburnRateIncrease = 0.005f;
     private const int maxTip = 100;
     private const int numberOfIdleAnims = 4;
+    private const float harrasmentLimit = 1f;
 
     private bool alive = true;
     private float deadness = 0;
+    private float harrasment = 0;
 
     private bool isInShade = false;
     private float amountOfSunLotion = 0f;
@@ -29,6 +31,9 @@ public class SunbathersController : MonoBehaviour {
     public GameObject happybubble;
     public GameObject sadbubble;
     public GameObject firebubble;
+
+    private BubbleBlink fireBlink;
+    private BubbleBlink drinkBlink;
 
     private GameObject currentBubble;
     private List<GameObject> activeRequests = new List<GameObject>();
@@ -48,13 +53,16 @@ public class SunbathersController : MonoBehaviour {
     {
         sr = gameObject.GetComponentsInChildren<Anima2D.SpriteMeshInstance>();
         animator = GetComponent<Animator>();
+        fireBlink = firebubble.GetComponent<BubbleBlink>();
+        drinkBlink = drinkbubble.GetComponent<BubbleBlink>();
     }
 
     // Use this for initialization
     void Start()
     {
         alive = true;
-        hydration = Random.Range(maxHydration*0.5f, maxHydration*0.6f);
+        hydration = Random.Range(maxHydration*0.5f, maxHydration);
+        amountOfSunLotion = Random.Range(0, maxSunLotion * 0.5f);
         animator.SetInteger("idleAnim", (int)(Random.value * numberOfIdleAnims));
         animator.SetBool("alive", true);
         holdPoseTime = Random.Range(5f, 20f);
@@ -120,15 +128,60 @@ public class SunbathersController : MonoBehaviour {
                 sr[i].color = Color.Lerp(Color.white, redSkin, sunburn / maxSunBurn);
             }
 
-            if(thirsty && tipCounter > 0){
-                tipCounter -= 5 * Time.deltaTime;
-                if(tipCounter<0){
-                    tipCounter = 0;
+            if(thirsty){
+                if (tipCounter > 0)
+                {
+                    tipCounter -= 5 * Time.deltaTime;
+                    if (tipCounter < 0)
+                    {
+                        tipCounter = 0;
+                    }
+                }
+
+                if (drinkBlink.isActiveAndEnabled)
+                {
+                    if (hydration < maxHydration * 0.1f)
+                    {
+                        drinkBlink.LevelUrgent();
+                    }
+                    else if (hydration < maxHydration * 0.25f)
+                    {
+                        drinkBlink.LevelAnxious();
+                    }
+                    else if (hydration < maxHydration * 0.35f)
+                    {
+                        drinkBlink.LevelWaiting();
+                    }
+                    else
+                    {
+                        drinkBlink.LevelNeutral();
+                    }
+                }
+            }
+
+            if (fireBlink.isActiveAndEnabled)
+            {
+                float invSunburn = maxSunBurn - sunburn;
+                if (invSunburn < maxSunBurn * 0.1f)
+                {
+                    fireBlink.LevelUrgent();
+                }
+                else if (invSunburn < maxSunBurn * 0.25f)
+                {
+                    fireBlink.LevelAnxious();
+                }
+                else if (invSunburn < maxSunBurn * 0.35f)
+                {
+                    fireBlink.LevelWaiting();
+                }
+                else
+                {
+                    fireBlink.LevelNeutral();
                 }
             }
 
             // Bubble controlling
-            if (amountOfSunLotion < -7f)
+            if (amountOfSunLotion < 0)
             {
                 AddRequest(firebubble);
             }
@@ -145,6 +198,10 @@ public class SunbathersController : MonoBehaviour {
                 {
                     ShowNextRequest();
                 }
+            }
+
+            if(harrasment > 0){
+                harrasment -= Time.deltaTime;
             }
         }
         else {
@@ -264,25 +321,35 @@ public class SunbathersController : MonoBehaviour {
     }
 
     public bool AddLotion(float amount) {
-        if (amountOfSunLotion < maxSunLotion && alive)
+        if (alive && activeRequests.Contains(firebubble))
         {
+            if(amountOfSunLotion < 0){
+                amountOfSunLotion = 0;
+            }
+            
             amountOfSunLotion += amount;
-            if (currentBubble == firebubble) {
-                if (amountOfSunLotion > 20f)
-                {
-                    RemoveRequest(firebubble);
-                    HideEmotion();
-                    ShowEmotion(happybubble);
-                }
+            if (amountOfSunLotion >= maxSunLotion)
+            {
+                RemoveRequest(firebubble);
+                ShowEmotion(happybubble);
+            }
+            if (amountOfSunLotion >= maxSunLotion)
+            {
+                amountOfSunLotion = maxSunLotion;
             }
             return true;
+        }
+        harrasment += 2 * Time.deltaTime;
+        if(harrasment > harrasmentLimit){
+            ShowEmotion(sadbubble);
         }
         return false;
     }
 
     private void Die(){
         deadness = 0;
-        drinkbubble.SetActive(false);
+        HideEmotion();
+        HideRequest();
         alive = false;
         animator.SetInteger("idleAnim", -1);
         animator.SetBool("alive", false);
