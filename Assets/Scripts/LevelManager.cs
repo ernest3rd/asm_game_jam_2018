@@ -57,17 +57,18 @@ public class LevelManager : MonoBehaviour {
                 }
             }
 
-            levelUpTime += Time.deltaTime;
-            if (levelUpTime > levelUpTimeSeconds)
+            if (currentLevel < sunbathers.Length - 1)
             {
-                levelUpTime = 0;
-                if (sunbathers.Length > currentLevel)
+                levelUpTime += Time.deltaTime;
+                if (levelUpTime > levelUpTimeSeconds)
                 {
+                    levelUpTime = 0;
+
                     currentLevel++;
                     GameObject tmp;
                     do
                     {
-                        tmp = sunbathers[(int)(Random.value * sunbathers.Length)];
+                        tmp = sunbathers[Mathf.FloorToInt(Random.value * sunbathers.Length)];
                     } while (tmp.activeInHierarchy);
                     tmp.SetActive(true);
                 }

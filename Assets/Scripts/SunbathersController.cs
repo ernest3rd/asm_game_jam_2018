@@ -32,6 +32,9 @@ public class SunbathersController : MonoBehaviour {
     public GameObject sadbubble;
     public GameObject firebubble;
 
+    private BubbleBlink fireBlink;
+    private BubbleBlink drinkBlink;
+
     private GameObject currentBubble;
     private List<GameObject> activeRequests = new List<GameObject>();
     private float bubbleTimer = 0;
@@ -50,6 +53,8 @@ public class SunbathersController : MonoBehaviour {
     {
         sr = gameObject.GetComponentsInChildren<Anima2D.SpriteMeshInstance>();
         animator = GetComponent<Animator>();
+        fireBlink = firebubble.GetComponent<BubbleBlink>();
+        drinkBlink = drinkbubble.GetComponent<BubbleBlink>();
     }
 
     // Use this for initialization
@@ -123,10 +128,55 @@ public class SunbathersController : MonoBehaviour {
                 sr[i].color = Color.Lerp(Color.white, redSkin, sunburn / maxSunBurn);
             }
 
-            if(thirsty && tipCounter > 0){
-                tipCounter -= 5 * Time.deltaTime;
-                if(tipCounter<0){
-                    tipCounter = 0;
+            if(thirsty){
+                if (tipCounter > 0)
+                {
+                    tipCounter -= 5 * Time.deltaTime;
+                    if (tipCounter < 0)
+                    {
+                        tipCounter = 0;
+                    }
+                }
+
+                if (drinkBlink.isActiveAndEnabled)
+                {
+                    if (hydration < maxHydration * 0.1f)
+                    {
+                        drinkBlink.LevelUrgent();
+                    }
+                    else if (hydration < maxHydration * 0.25f)
+                    {
+                        drinkBlink.LevelAnxious();
+                    }
+                    else if (hydration < maxHydration * 0.35f)
+                    {
+                        drinkBlink.LevelWaiting();
+                    }
+                    else
+                    {
+                        drinkBlink.LevelNeutral();
+                    }
+                }
+            }
+
+            if (fireBlink.isActiveAndEnabled)
+            {
+                float invSunburn = maxSunBurn - sunburn;
+                if (invSunburn < maxSunBurn * 0.1f)
+                {
+                    fireBlink.LevelUrgent();
+                }
+                else if (invSunburn < maxSunBurn * 0.25f)
+                {
+                    fireBlink.LevelAnxious();
+                }
+                else if (invSunburn < maxSunBurn * 0.35f)
+                {
+                    fireBlink.LevelWaiting();
+                }
+                else
+                {
+                    fireBlink.LevelNeutral();
                 }
             }
 
