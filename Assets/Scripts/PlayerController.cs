@@ -98,17 +98,13 @@ public class PlayerController : MonoBehaviour {
                     {
                         if (!(buttonDownActive))
                         {
-                            if (parent.GetComponent<SunbathersController>().isThirsty())
+                            if (parent.GetComponent<SunbathersController>().OfferDrink())
                             {
-                                money += parent.GetComponent<SunbathersController>().addHydration();
+                                money += parent.GetComponent<SunbathersController>().AddHydration();
                                 carryingDrink = false;
                                 buttonDownActive = true;
                                 icons[1].SetActive(false);
                                 drink.gameObject.SetActive(carryingDrink);
-                            }
-                            else
-                            {
-                                parent.GetComponent<SunbathersController>().initiateSad();
                             }
                         }
                     }
@@ -116,7 +112,7 @@ public class PlayerController : MonoBehaviour {
                     {
                         if (!(buttonDownActive))
                         {
-                            parent.GetComponent<SunbathersController>().addLotion(10.0f * Time.deltaTime);
+                            parent.GetComponent<SunbathersController>().AddLotion(10.0f * Time.deltaTime);
                             if (!applyingLotion)
                             {
                                 animator.SetBool("applyingLotion", true);
@@ -222,7 +218,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public int moneyAmount(){
+    public int MoneyAmount(){
         return money;
     }
 }

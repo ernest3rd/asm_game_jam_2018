@@ -30,9 +30,10 @@ public class SunbathersController : MonoBehaviour {
     public GameObject sadbubble;
     public GameObject firebubble;
 
-    public GameObject currentBubble;
-    private float faceTimer = 3f;
-    private bool bubbleTimerActive = false;
+    private GameObject currentBubble;
+    private List<GameObject> activeRequests = new List<GameObject>();
+    private float bubbleTimer = 0;
+    private bool emotionActive = false;
 
     private float holdPoseTime = 0f;
     private Animator animator;
@@ -96,7 +97,7 @@ public class SunbathersController : MonoBehaviour {
             // Order drink when thirst comes
             if (hydration < maxHydration / 2f && !thirsty)
             {
-                orderDrink();
+                OrderDrink();
             }
 
             // Change idle animation
@@ -110,7 +111,7 @@ public class SunbathersController : MonoBehaviour {
             // Die from sunburn
             if (sunburn > maxSunBurn || hydration < 0)
             {
-                die();
+                Die();
             }
 
             // Color the skin
@@ -129,22 +130,20 @@ public class SunbathersController : MonoBehaviour {
             // Bubble controlling
             if (amountOfSunLotion < -7f)
             {
-                if (currentBubble != firebubble)
-                {
-                    showBubble(firebubble, false);
-                }
+                AddRequest(firebubble);
             }
 
-            if (currentBubble)
+            // TODO: Make a method out of this
+            bubbleTimer -= Time.deltaTime;
+            if (bubbleTimer < 0)
             {
-                if (bubbleTimerActive) {
-                    faceTimer -= Time.deltaTime;
-                    if (faceTimer < 0)
-                    {
-                        currentBubble.SetActive(false);
-                        currentBubble = null;
-                        bubbleTimerActive = false;
-                    }
+                if (emotionActive)
+                {
+                    HideEmotion();
+                }
+                else if(activeRequests.Count > 0)
+                {
+                    ShowNextRequest();
                 }
             }
         }
@@ -160,59 +159,120 @@ public class SunbathersController : MonoBehaviour {
         }
     }
 
-    private void orderDrink()
+    private void OrderDrink()
     {
         thirsty = true;
         tipCounter = maxTip;
-        drinkbubble.SetActive(true);
+        AddRequest(drinkbubble);
     }
 
-    public void initiateSad() {
-        showBubble(sadbubble, true);
-    }
-
-    private void showBubble(GameObject bubble, bool timer) {
-        if (!(currentBubble)) {
-            currentBubble = bubble;
-            currentBubble.SetActive(true);
-            faceTimer = 3f;
-            bubbleTimerActive = timer;
+    private void AddRequest(GameObject bubble){
+        if(!activeRequests.Contains(bubble)){
+            activeRequests.Add(bubble);
         }
     }
 
-    private void hideBubble() {
-        currentBubble.SetActive(false);
-        currentBubble = null;
-        bubbleTimerActive = false;
+    private void RemoveRequest(GameObject bubble){
+        if(currentBubble == bubble)
+        {
+            currentBubble = null;
+        }
+        bubble.SetActive(false);
+        activeRequests.Remove(bubble);
     }
 
-    public bool isThirsty(){
+    private void ShowNextRequest(){
+        if (!emotionActive)
+        {
+            if(activeRequests.Count > 1)
+            {
+                for (int i = 0; i < activeRequests.Count; i++)
+                {
+                    if (activeRequests[i].activeSelf)
+                    {
+                        activeRequests[i].SetActive(false);
+                        if(i+1 < activeRequests.Count)
+                        {
+                            currentBubble = activeRequests[i+1];
+                        }
+                        else
+                        {
+                            currentBubble = activeRequests[0];
+                        }
+                        currentBubble.SetActive(true);
+                        break;
+                    }
+                }
+
+            }
+            else if(activeRequests.Count == 1){
+                currentBubble = activeRequests[0];
+                currentBubble.SetActive(true);
+            }
+            bubbleTimer = 2f;
+        }
+    }
+    private void HideRequest(){
+        foreach(GameObject bubble in activeRequests){
+            bubble.SetActive(false);
+        }
+    }
+
+    private void ShowEmotion(GameObject bubble)
+    {
+        HideEmotion();
+        HideRequest();
+        currentBubble = bubble;
+        currentBubble.SetActive(true);
+        bubbleTimer = 2f;
+        emotionActive = true;
+    }
+
+    private void HideEmotion() {
+        if (currentBubble)
+        {
+            currentBubble.SetActive(false);
+            currentBubble = null;
+            emotionActive = false;
+        }
+    }
+
+    public bool IsThirsty(){
         return thirsty && alive;
     }
 
-    public int addHydration() {
+    public bool OfferDrink(){
+        if(IsThirsty()){
+            return true;
+        }
+        ShowEmotion(sadbubble);
+        return false;
+    }
+
+    public int AddHydration() {
         if (thirsty && alive) {
             hydration += maxHydration / 2f;
             if(hydration > maxHydration){
                 hydration = maxHydration;
             }
             thirsty = false;
-            drinkbubble.SetActive(false);
-            showBubble(happybubble, true);
+            RemoveRequest(drinkbubble);
+            ShowEmotion(happybubble);
             return (int)tipCounter;
         }
         return 0;
     }
 
-    public bool addLotion(float amount) {
+    public bool AddLotion(float amount) {
         if (amountOfSunLotion < maxSunLotion && alive)
         {
             amountOfSunLotion += amount;
             if (currentBubble == firebubble) {
                 if (amountOfSunLotion > 20f)
                 {
-                    hideBubble();
-                    showBubble(happybubble, true);
+                    RemoveRequest(firebubble);
+                    HideEmotion();
+                    ShowEmotion(happybubble);
                 }
             }
             return true;
@@ -220,7 +280,7 @@ public class SunbathersController : MonoBehaviour {
         return false;
     }
 
-    private void die(){
+    private void Die(){
         deadness = 0;
         drinkbubble.SetActive(false);
         alive = false;
@@ -230,7 +290,7 @@ public class SunbathersController : MonoBehaviour {
         justBeforeDyingSkin = Color.Lerp(Color.white, redSkin, sunburn / maxSunBurn);
     }
 
-    public bool isAlive(){
+    public bool IsAlive(){
         return alive;
     }
 }

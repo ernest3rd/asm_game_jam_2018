@@ -17,7 +17,7 @@ public class HoveringSpriteRenderer : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void LateUpdate () {
         Vector3 offset = Vector3.zero;
         if(enableX){
             offset.x = Mathf.Sin(Time.time * speed * (direction ? 1 : -1)) * radius;
